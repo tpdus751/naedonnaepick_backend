@@ -1,0 +1,60 @@
+# === Java & Gradle Build ===
+/build/
+/out/
+/target/
+/.gradle/
+/*.class
+!src/main/resources/static/   # static은 제외 (웹 정적 자원 포함 시)
+/bin/
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+
+# === OS/환경별 임시파일 ===
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# === IDE 설정파일 및 백업 ===
+*.swp
+*.swo
+*.bak
+
+# === Log & Runtime 파일 ===
+logs/
+*.log
+
+# === 환경변수 파일 (.env 등) ===
+.env
+.env.local
+.env.development
+.env.production
+
+# === Application Secrets ===
+src/main/resources/application-*.yml
+src/main/resources/application-*.properties
+
+# === JWT 또는 키 파일 ===
+*.key
+*.pem
+*.jks
+
+# === Test Coverage & Reports ===
+/coverage/
+/test-output/
+/jacoco-report/
+
+# === Node.js 포함될 경우 (예: 프론트 포함 프로젝트) ===
+node_modules/
+dist/
+
+# === Docker ===
+/docker-compose.override.yml
+**/docker.env
+**/.docker/
+
+# === Git ignore override ===
+!.gitignore
