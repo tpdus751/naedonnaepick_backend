@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.chat.service;
 
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
+import com.naedonnaepick.backend.chat.websocket.db.entity.ChatMessage;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ public interface ChatService {
 
     List<ChatroomEntity> findAllChatrooms();
 
-    void enterRoom(Long roomNo, String userId);
+    List<ChatMessage> findAllChats(int roomNo);
 }

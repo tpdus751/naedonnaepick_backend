@@ -2,6 +2,7 @@ package com.naedonnaepick.backend.chat.db.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +14,12 @@ import java.sql.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "chatrooms")
+@Entity
+@Table(name = "chat_rooms")  // ✅ 실제 테이블 이름 정확히 명시
 public class ChatroomEntity {
 
     @Id
-    private int room_no;
+    private Integer room_no;
 
     private String title;
 

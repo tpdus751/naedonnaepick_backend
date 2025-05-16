@@ -1,39 +1,36 @@
 package com.naedonnaepick.backend.chat.service;
 
+import com.naedonnaepick.backend.chat.dao.ChatDAO;
+import com.naedonnaepick.backend.chat.dao.ChatDAOImpl;
+import com.naedonnaepick.backend.chat.db.ChatRepository;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
+import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
+import com.naedonnaepick.backend.chat.websocket.db.entity.ChatMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ChatServiceImpl implements ChatService {
-    @Override
-    public List<ChatroomEntity> findAllChatrooms() {
 
-        List<ChatroomEntity> chatrooms = new ArrayList<>();
+    private ChatDAO chatDAO;
 
-        ChatroomEntity chatroom1 = ChatroomEntity.builder()
-                .room_no(1)
-                .title("성남시에서 가장 핫한 음식점은?")
-                .max_person_cnt(100)
-                .created_at(Date.valueOf("2025-05-13"))
-                .build();
-
-        ChatroomEntity chatroom2 = ChatroomEntity.builder()
-                .room_no(2)
-                .title("성남시를 대표하는 메뉴는 이것!!")
-                .max_person_cnt(100)
-                .created_at(Date.valueOf("2025-05-14"))
-                .build();
-
-        chatrooms.add(chatroom1);
-        chatrooms.add(chatroom2);
-
-        return chatrooms;
+    @Autowired
+    public ChatServiceImpl(ChatDAO chatDao) {
+        this.chatDAO = chatDao;
     }
 
     @Override
-    public void enterRoom(Long roomNo, String userId) {
+    public List<ChatroomEntity> findAllChatrooms() {
 
+        return chatDAO.selectAllChatRooms();
+    }
+
+    @Override
+    public List<ChatMessage> findAllChats(int roomNo) {
+        return chatDAO.selectAllChats(roomNo);
     }
 }
