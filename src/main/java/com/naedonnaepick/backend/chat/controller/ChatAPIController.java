@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://192.168.25.7:8081", "http://localhost:8081"})
+@CrossOrigin(origins = {"192.168.0.71:8081", "http://localhost:8081"})
 @RestController
 @RequestMapping("/api/chat")
 public class ChatAPIController {
