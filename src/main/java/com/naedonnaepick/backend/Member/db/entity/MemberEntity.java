@@ -5,31 +5,29 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "members")
+@Table(name = "users")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MemberEntity {
+
     @Id
-    @Column(length = 255, nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(name = "first_name", length = 50, nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", length = 50, nullable = false)
-    private String lastName;
-
-    @Column(length = 50, nullable = false)
     private String nickname;
+
+    private String created_at;
+
+    private int privacy_agreed;
+
+    private String first_name;
+
+    private String last_name;
+
 }
