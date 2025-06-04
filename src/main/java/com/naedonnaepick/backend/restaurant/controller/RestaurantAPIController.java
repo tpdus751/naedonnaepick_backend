@@ -23,8 +23,8 @@ public class RestaurantAPIController {
     @GetMapping("/recommended")
     public List<RestaurantEntity> sendRecommendedRestaurants(
             @RequestParam(name = "location") String location,
-            @RequestParam(name = "minPrice", required = false, defaultValue = "0") int minPrice,
-            @RequestParam(name = "maxPrice", required = false, defaultValue = "10000") int maxPrice
+            @RequestParam(name = "minPrice") int minPrice,
+            @RequestParam(name = "maxPrice") int maxPrice
     ) {
         // Service 호출
         return restaurantService.getRecommendedRestaurants(location, minPrice, maxPrice);
