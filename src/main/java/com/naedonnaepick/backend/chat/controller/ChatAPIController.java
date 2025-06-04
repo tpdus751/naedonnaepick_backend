@@ -4,9 +4,8 @@ import com.naedonnaepick.backend.chat.db.entity.ReportEntity;
 import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
 import com.naedonnaepick.backend.chat.service.ChatService;
-import com.naedonnaepick.backend.chat.service.ChatServiceImpl;
-import com.naedonnaepick.backend.chat.websocket.db.ChatMessageRepository;
 import com.naedonnaepick.backend.chat.websocket.db.entity.ChatMessage;
+import com.naedonnaepick.backend.chat.websocket.service.SessionTracker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,9 @@ public class ChatAPIController {
     ChatAPIController(ChatService chatService) {
         this.chatService = chatService;
     }
+
+    @Autowired
+    private SessionTracker sessionTracker;
 
     // 채팅방 목록 가져오기
     @GetMapping("/chatrooms")
@@ -55,5 +57,11 @@ public class ChatAPIController {
 
         chatService.submitReport(report);
         return ResponseEntity.ok("신고가 성공적으로 접수되었습니다.");
+    }
+
+    // 채팅방 접속자 수 조회
+    @GetMapping("/room/{roomNo}/userCount")
+    public ResponseEntity<Integer> getUserCount(@PathVariable String roomNo) {
+        return ResponseEntity.ok(sessionTracker.getUserCount(roomNo));
     }
 }
