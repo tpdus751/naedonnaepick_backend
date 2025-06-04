@@ -1,5 +1,6 @@
 package com.naedonnaepick.backend.chat.controller;
 
+import com.naedonnaepick.backend.chat.db.entity.ReportEntity;
 import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
 import com.naedonnaepick.backend.chat.service.ChatService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = {"192.168.0.71:8081", "http://localhost:8081"})
@@ -44,4 +46,14 @@ public class ChatAPIController {
         return chatService.findAllChats(roomNo);
     }
 
+    // 채팅 신고 접수
+    @PostMapping("/report")
+    public ResponseEntity<String> submitReport(@RequestBody ReportEntity report) {
+        if (report.getReason() == null || report.getReason().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("신고 사유는 필수입니다.");
+        }
+
+        chatService.submitReport(report);
+        return ResponseEntity.ok("신고가 성공적으로 접수되었습니다.");
+    }
 }
