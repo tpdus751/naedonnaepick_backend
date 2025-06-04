@@ -3,6 +3,7 @@ package com.naedonnaepick.backend.restaurant.service;
 import com.naedonnaepick.backend.restaurant.dao.RestaurantDAO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<RestaurantEntity> getRestaurantsBySearchText(String searchText, Pageable pageable) {
+    public Page<RestaurantEntity> getRestaurantsBySearchText(String searchText, Pageable pageable) {
         return restaurantDAO.findRestaurantsBySearchText(searchText, pageable);
     }
 }

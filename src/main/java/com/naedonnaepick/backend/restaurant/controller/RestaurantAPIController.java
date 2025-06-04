@@ -38,7 +38,7 @@ public class RestaurantAPIController {
             @RequestParam(name = "size", defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return restaurantService.getRestaurantsBySearchText(searchText, pageable);
+        return restaurantService.getRestaurantsBySearchText(searchText, pageable).getContent();
     }
 
 

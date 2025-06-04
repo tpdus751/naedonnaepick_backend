@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.restaurant.db;
 
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,14 +22,15 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, In
             @Param("maxPrice") int maxPrice
     );
 
-    @Query("SELECT r FROM RestaurantEntity r " +
+    @Query(value = "SELECT DISTINCT r FROM RestaurantEntity r " +
             "JOIN r.restaurantMenus m " +
             "WHERE r.name LIKE %:searchText% " +
-            "OR m.menu LIKE %:searchText% " +
-            "GROUP BY r.restaurantNo")
-    List<RestaurantEntity> findRestaurantsBySearchText(
-            @Param("searchText") String searchText,
-            Pageable pageable
-    );
+            "OR m.menu LIKE %:searchText%",
+            countQuery = "SELECT COUNT(DISTINCT r) FROM RestaurantEntity r " +
+                    "JOIN r.restaurantMenus m " +
+                    "WHERE r.name LIKE %:searchText% " +
+                    "OR m.menu LIKE %:searchText%")
+    Page<RestaurantEntity> findRestaurantsBySearchText(@Param("searchText") String searchText, Pageable pageable);
+
 
 }
