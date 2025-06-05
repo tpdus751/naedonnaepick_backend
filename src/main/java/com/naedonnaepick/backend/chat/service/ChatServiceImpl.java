@@ -1,16 +1,12 @@
 package com.naedonnaepick.backend.chat.service;
 
 import com.naedonnaepick.backend.chat.dao.ChatDAO;
-import com.naedonnaepick.backend.chat.dao.ChatDAOImpl;
-import com.naedonnaepick.backend.chat.db.ChatRepository;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
-import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
+import com.naedonnaepick.backend.chat.db.entity.ReportEntity;
 import com.naedonnaepick.backend.chat.websocket.db.entity.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,5 +28,10 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatMessage> findAllChats(int roomNo) {
         return chatDAO.selectAllChats(roomNo);
+    }
+
+    @Override
+    public void submitReport(ReportEntity report) {
+        chatDAO.insertReport(report);
     }
 }
