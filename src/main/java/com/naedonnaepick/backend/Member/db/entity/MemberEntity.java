@@ -1,11 +1,9 @@
 // src/main/java/com/example/team_project_2_1/Member/db/entity/MemberEntity.java
 package com.naedonnaepick.backend.Member.db.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -22,12 +20,11 @@ public class MemberEntity {
 
     private String nickname;
 
-    private String created_at;
+    private LocalDateTime createdAt;
 
     private int privacy_agreed;
 
     private String first_name;
 
     private String last_name;
-
 }

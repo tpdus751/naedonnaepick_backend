@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.Member.service;
 
 import com.naedonnaepick.backend.Member.db.MemberRepository;
+import com.naedonnaepick.backend.Member.db.UserTagRepository;
 import com.naedonnaepick.backend.Member.db.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final UserTagRepository userTagRepository;
 
     /** 회원가입 */
     public MemberEntity register(MemberEntity member) {
@@ -24,3 +26,4 @@ public class MemberService {
                 .orElse(null);
     }
 }
+
