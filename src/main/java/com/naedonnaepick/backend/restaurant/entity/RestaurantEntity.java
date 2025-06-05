@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal; // BigDecimal 임포트
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
