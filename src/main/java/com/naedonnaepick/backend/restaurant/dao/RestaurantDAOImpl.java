@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -28,4 +29,20 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     public Page<RestaurantEntity> findRestaurantsBySearchText(String name, Pageable pageable) {
         return restaurantRepository.findRestaurantsBySearchText(name, pageable);
     }
+
+    @Override
+    public List<RestaurantEntity> findNearby(BigDecimal lat, BigDecimal lng) {
+        return restaurantRepository.findNearbyWithMenus(lat, lng);
+    }
+
+    @Override
+    public Page<RestaurantEntity> searchByTag(String tag, Pageable pageable) {
+        return restaurantRepository.searchByTag(tag, pageable);
+    }
+
+    @Override
+    public Page<RestaurantEntity> searchByKeyword(String keyword, Pageable pageable) {
+        return restaurantRepository.searchByKeyword(keyword, pageable);
+    }
+
 }

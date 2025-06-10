@@ -25,12 +25,12 @@ public class UserEntity {
 
     private String nickname;
 
-    private Date createdAt;
+    private Date created_at;
 
-    private int privacyAgreed;
+    private int privacy_agreed;
 
-    private String firstName;
+    private String first_name;
 
-    private String lastName;
+    private String last_name;
 
 }

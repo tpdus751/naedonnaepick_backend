@@ -42,4 +42,14 @@ public class RestaurantEntity {
     @OneToMany(mappedBy = "restaurantEntity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<RestaurantMenu> restaurantMenus;
+
+    @Transient
+    private Double distance;
+
+    public double getDistance() {
+        return distance;
+    }
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 }

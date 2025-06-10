@@ -5,10 +5,13 @@ import com.naedonnaepick.backend.restaurant.entity.RestaurantMenu;
 import com.naedonnaepick.backend.restaurant.service.RestaurantMenuService;
 import com.naedonnaepick.backend.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -48,5 +51,40 @@ public class RestaurantAPIController {
     ) {
         return restaurantMenuService.getRestaurantMenus(restaurantNo);
     }
+
+    @GetMapping("/nearby")
+    public ResponseEntity<List<RestaurantEntity>> getNearbyRestaurants(
+            @RequestParam BigDecimal lat,
+            @RequestParam BigDecimal lng
+    ) {
+        return ResponseEntity.ok(restaurantService.findNearbyRestaurants(lat, lng));
+    }
+
+    // 1. 태그 검색
+    @GetMapping("/tag")
+    public ResponseEntity<Page<RestaurantEntity>> searchByTag(
+            @RequestParam String tag,
+            @RequestParam BigDecimal lat,
+            @RequestParam BigDecimal lng,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        Page<RestaurantEntity> result = restaurantService.searchByTagWithDistance(tag, lat, lng, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+    // 2. 일반 키워드 검색
+    @GetMapping("/general")
+    public ResponseEntity<Page<RestaurantEntity>> searchByKeyword(
+            @RequestParam String keyword,
+            @RequestParam BigDecimal lat,
+            @RequestParam BigDecimal lng,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        Page<RestaurantEntity> result = restaurantService.searchByKeywordWithDistance(keyword, lat, lng, page, size);
+        return ResponseEntity.ok(result);
+    }
+
 
 }
