@@ -39,4 +39,15 @@ public class BudgetDAOImpl implements BudgetDAO {
         Optional<Budgets> budget = budgetRepository.findCurrentBudget(email, date);
         return budget.orElse(null);
     }
+
+    @Override
+    public Budgets spendBudget(String email, Date date, int spend) {
+        // Get the current budget
+        Budgets currentBudget = findCurrentBudgetByEmailAndDate(email, date);
+        if (currentBudget != null) {
+            currentBudget.setTotalBudget(currentBudget.getTotalBudget() - spend); // Adjust budget amount
+            return budgetRepository.save(currentBudget); // Save updated budget
+        }
+        return null;
+    }
 }
