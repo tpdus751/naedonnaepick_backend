@@ -32,4 +32,9 @@ public class BudgetServiceImpl implements BudgetService {
     public Budgets findCurrentBudgetByEmailAndDate(String email, Date date) {
         return budgetDAO.findCurrentBudgetByEmailAndDate(email, date);
     }
+
+    @Override
+    public Budgets spendBudget(String email, Date date, int spend) {
+        return budgetDAO.spendBudget(email, date, spend);
+    }
 }

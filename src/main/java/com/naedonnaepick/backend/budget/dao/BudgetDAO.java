@@ -11,4 +11,6 @@ public interface BudgetDAO {
     List<Budgets> findAllBudgetsByEmail(String email);
 
     Budgets findCurrentBudgetByEmailAndDate(String email, Date date);
+
+    Budgets spendBudget(String email, Date date, int spend);
 }
