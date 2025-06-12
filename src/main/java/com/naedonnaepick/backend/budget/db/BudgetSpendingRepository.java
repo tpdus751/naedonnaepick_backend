@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BudgetSpendingRepository extends JpaRepository<BudgetSpending, Integer> {
-
+    List<BudgetSpending> findByBudgetNo(int budgetNo);
 }

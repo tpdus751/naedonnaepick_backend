@@ -1,11 +1,12 @@
 package com.naedonnaepick.backend.budget.dao;
 
 import com.naedonnaepick.backend.budget.db.BudgetRepository;
+import com.naedonnaepick.backend.budget.entity.BudgetSpending;
 import com.naedonnaepick.backend.budget.entity.Budgets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +21,7 @@ public class BudgetDAOImpl implements BudgetDAO {
     }
 
     @Override
-    public Budgets setBudget(String email, Date startDate, Date endDate, int totalBudget) {
-        Budgets budget = new Budgets();
-        budget.setEmail(email);
-        budget.setStartDate(startDate);
-        budget.setEndDate(endDate);
-        budget.setTotalBudget(totalBudget);
+    public Budgets setBudget(Budgets budget) {
         return budgetRepository.save(budget);
     }
 
@@ -37,17 +33,25 @@ public class BudgetDAOImpl implements BudgetDAO {
     @Override
     public Budgets findCurrentBudgetByEmailAndDate(String email, Date date) {
         Optional<Budgets> budget = budgetRepository.findCurrentBudget(email, date);
+
+        if (budget.isPresent()) {
+            System.out.println("✅ 예산 있음: " + budget.get());
+        } else {
+            System.out.println("❌ 예산 없음");
+        }
+
         return budget.orElse(null);
     }
 
     @Override
-    public Budgets spendBudget(String email, Date date, int spend) {
-        // Get the current budget
-        Budgets currentBudget = findCurrentBudgetByEmailAndDate(email, date);
-        if (currentBudget != null) {
-            currentBudget.setTotalBudget(currentBudget.getTotalBudget() - spend); // Adjust budget amount
-            return budgetRepository.save(currentBudget); // Save updated budget
-        }
-        return null;
+    public List<BudgetSpending> findSpendingByBudgetNo(int budgetNo) {
+        return List.of();
     }
+
+    @Override
+    public Budgets updatedBudgetForSpending(Budgets budget) {
+        return budgetRepository.save(budget);
+    }
+
+
 }
