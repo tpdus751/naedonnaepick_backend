@@ -165,4 +165,33 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, In
             @Param("district") String district,
             Pageable pageable
     );
+
+    @Query(value = """
+    SELECT *
+    FROM restaurants r
+    WHERE r.latitude IS NOT NULL
+      AND r.longitude IS NOT NULL
+      AND r.address LIKE %:region%
+      AND EXISTS (
+          SELECT 1
+          FROM restaurant_menus m
+          WHERE m.restaurant_no = r.restaurant_no
+            AND m.price BETWEEN :minPrice AND :maxPrice
+      )
+    """, nativeQuery = true)
+    List<RestaurantEntity> findByLocationWithPriceRange(
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            @Param("region") String region
+    );
+
+
+    // ✅ 지역구명이 address 컬럼에 포함된 음식점
+    @Query("SELECT DISTINCT r FROM RestaurantEntity r JOIN r.restaurantMenus m " +
+            "WHERE r.address LIKE %:region% AND r.status = 'active' AND m.price BETWEEN :minPrice AND :maxPrice")
+    List<RestaurantEntity> findByRegionAndMenuPrice(
+            @Param("region") String region,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice);
+
 }

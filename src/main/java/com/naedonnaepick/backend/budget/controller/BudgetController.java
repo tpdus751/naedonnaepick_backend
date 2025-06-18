@@ -55,12 +55,15 @@ public class BudgetController {
 
     // 현재 날짜와 이메일로 특정 예산 조회
     @GetMapping("/current")
-    public Budgets getCurrentBudget(
+    public BudgetWithSpendingDTO getCurrentBudget(
             @RequestParam(name = "email") String email,
             @RequestParam(name = "date") String date
     ) {
-        return budgetService.findCurrentBudgetByEmailAndDate(email, java.sql.Date.valueOf(date));
+        Budgets budget = budgetService.findCurrentBudgetByEmailAndDate(email, java.sql.Date.valueOf(date));
+        List<BudgetSpending> spendingList = budgetService.findSpendingByBudgetNo(budget.getBudgetNo());
+        return new BudgetWithSpendingDTO(budget, spendingList);
     }
+
 
     // 먹기 버튼 누를 시 예산에서 금액 차감
     @PostMapping("/spend")

@@ -1,5 +1,6 @@
 package com.naedonnaepick.backend.restaurant.service;
 
+import com.naedonnaepick.backend.restaurant.dto.RestaurantRecommendationDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantWithDistanceDTO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RestaurantService {
@@ -33,4 +35,7 @@ public interface RestaurantService {
     Page<RestaurantEntity> searchByKeywordWithDistance(String keyword, BigDecimal lat, BigDecimal lng, int page, int size);
 
     Page<RestaurantEntity> searchByTagWithDistanceAndDistrict(String tag, String district, BigDecimal lat, BigDecimal lng, int page, int size);
+
+    List<RestaurantRecommendationDTO> recommendByLocation(BigDecimal lat, BigDecimal lng, Map<String, Double> userTags, int minPrice, int maxPrice, String region);
+
 }
