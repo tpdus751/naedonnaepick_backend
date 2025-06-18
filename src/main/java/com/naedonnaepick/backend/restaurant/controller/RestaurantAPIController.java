@@ -1,10 +1,13 @@
 package com.naedonnaepick.backend.restaurant.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.naedonnaepick.backend.restaurant.dto.RestaurantRecommendationDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantWithDistanceDTO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantMenu;
 import com.naedonnaepick.backend.restaurant.service.RestaurantMenuService;
 import com.naedonnaepick.backend.restaurant.service.RestaurantService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,12 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/restaurant")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RestaurantAPIController {
 
     @Autowired
@@ -36,24 +41,46 @@ public class RestaurantAPIController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/recommended")
-    public ResponseEntity<Page<RestaurantWithDistanceDTO>> sendRecommendedRestaurants(
-            @RequestParam String location,
-            @RequestParam int minPrice,
-            @RequestParam int maxPrice,
-            @RequestParam(required = false) BigDecimal lat,
-            @RequestParam(required = false) BigDecimal lng,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<RestaurantWithDistanceDTO> result = restaurantService.getRecommendedRestaurants(
-                location, minPrice, maxPrice, lat, lng, pageable
-        );
-        return ResponseEntity.ok(result);
+    // ✅ 현재 위치 기반 추천, 지역구 기반 추천 동일
+    @PostMapping("recommended/location")
+    public ResponseEntity<List<RestaurantRecommendationDTO>> recommendByLocation(@RequestBody Map<String, Object> payload) {
+        try {
+            // ✅ 위치 정보
+            double lat = ((Number) payload.get("lat")).doubleValue();
+            double lng = ((Number) payload.get("lng")).doubleValue();
+            BigDecimal latitude = BigDecimal.valueOf(lat);
+            BigDecimal longitude = BigDecimal.valueOf(lng);
+
+            // ✅ 가격대
+            int minPrice = ((Number) payload.get("minPrice")).intValue();
+            int maxPrice = ((Number) payload.get("maxPrice")).intValue();
+
+            // ✅ 지역 이름 (null 허용)
+            String region = (String) payload.getOrDefault("region", null);
+            System.out.println("전달받은 지역 이름: " + region);
+
+            // ✅ 태그 점수 파싱
+            Map<String, Object> rawScores = (Map<String, Object>) payload.get("tagScores");
+            Map<String, Double> tagScores = new HashMap<>();
+            for (Map.Entry<String, Object> entry : rawScores.entrySet()) {
+                if (entry.getValue() instanceof Number) {
+                    tagScores.put(entry.getKey(), ((Number) entry.getValue()).doubleValue());
+                }
+            }
+
+            System.out.println("받은 사용자 태그 점수: {}" + tagScores);
+
+            // ✅ 추천 결과 받기
+            List<RestaurantRecommendationDTO> recommended =
+                    restaurantService.recommendByLocation(latitude, longitude, tagScores, minPrice, maxPrice, region);
+
+            return ResponseEntity.ok(recommended);
+
+        } catch (Exception e) {
+            System.out.println("📛 추천 요청 처리 중 예외 발생" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-
-
 
     // 기존 sendSearchRestaurants 메서드 (프론트엔드에서 사용 중인 경우)
     // 이 메서드는 거리 정렬이 안 됩니다. 아래 general 검색을 사용하는 것이 좋습니다.
