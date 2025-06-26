@@ -14,6 +14,6 @@ public class ChatEnterRequestEntity {
 
     private Long roomNo;  // 요청 JSON의 roomNo
 
-    private String userId; // 요청 JSON의 userId
+    private String email; // 요청 JSON의 userId
 
 }

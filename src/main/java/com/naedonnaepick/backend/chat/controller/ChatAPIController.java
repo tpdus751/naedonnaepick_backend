@@ -3,6 +3,7 @@ package com.naedonnaepick.backend.chat.controller;
 import com.naedonnaepick.backend.chat.db.entity.ReportEntity;
 import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
+import com.naedonnaepick.backend.chat.entity.ChatLeaveRequestEntity;
 import com.naedonnaepick.backend.chat.service.ChatService;
 import com.naedonnaepick.backend.chat.websocket.db.entity.ChatMessage;
 import com.naedonnaepick.backend.chat.websocket.service.SessionTracker;
@@ -38,8 +39,14 @@ public class ChatAPIController {
     // ✅ 채팅방 입장 (필요시 입장 시도 기록 등 확장 가능)
     @PostMapping("/enter")
     public ResponseEntity<String> enterChatRoom(@RequestBody ChatEnterRequestEntity request) {
-        // 현재 별도의 로직 없이 성공만 반환
+        sessionTracker.addUser(String.valueOf(request.getRoomNo()), request.getEmail());
         return ResponseEntity.ok("입장 성공");
+    }
+
+    @PostMapping("/leave")
+    public ResponseEntity<String> leaveChatRoom(@RequestBody ChatLeaveRequestEntity request) {
+        sessionTracker.removeUser(request.getRoomNo(), request.getEmail());
+        return ResponseEntity.ok("퇴장 처리 완료");
     }
 
     // 채팅방 전체 대화 내역 송신
