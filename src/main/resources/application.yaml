@@ -12,3 +12,10 @@ spring:
     properties:
       format_sql: true
       dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8080
+
+flask:
+  recommend:
+    url: http://localhost:5000/api/predict
