@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.budget.controller;
 
 import com.naedonnaepick.backend.budget.dto.BudgetSpendRequest;
+import com.naedonnaepick.backend.budget.dto.BudgetUpdateRequest;
 import com.naedonnaepick.backend.budget.dto.BudgetWithSpendingDTO;
 import com.naedonnaepick.backend.budget.dto.EmailRequest;
 import com.naedonnaepick.backend.budget.entity.BudgetSpending;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/budget")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8081")
 public class BudgetController {
 
     @Autowired
@@ -106,6 +107,37 @@ public class BudgetController {
         response.put("totalBudget", updatedBudget.getTotalBudget()); // 차감된 후 예산
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateBudget(@RequestBody BudgetUpdateRequest request) {
+        System.out.println(request.toString());
+
+        int budgetNo = request.getBudgetNo();
+        Integer newBudget = request.getTotalBudget();
+        String restaurantName = request.getRestaurantName();  // ex. "수정"
+        String menu = request.getMenu();                      // ex. "추가" or "차감"
+        Integer remainingBudget = request.getRemainingBudget();
+
+        // 변동 기록이 있을 경우 → 소비 내역에 추가
+        if (restaurantName != null && menu != null && !menu.isEmpty()) {
+            BudgetSpending spending = new BudgetSpending();
+            spending.setBudgetNo(budgetNo);
+            spending.setRestaurantName(restaurantName);
+            spending.setMenu(menu);
+            if (menu.equals("추가")) {
+                spending.setPrice(Math.abs(newBudget - remainingBudget)); // 변동 금액 기록
+            } else {
+                spending.setPrice(Math.abs(remainingBudget - newBudget)); // 변동 금액 기록
+            }
+            spending.setRemainingAfter(newBudget);
+            spending.setDate(new java.sql.Date(System.currentTimeMillis()));
+
+            budgetService.spendBudget(spending);
+        }
+
+        return new ResponseEntity<>("예산이 성공적으로 수정되었습니다.", HttpStatus.OK);
     }
 
 }

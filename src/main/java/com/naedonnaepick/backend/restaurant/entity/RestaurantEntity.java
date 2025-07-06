@@ -24,7 +24,9 @@ public class RestaurantEntity {
 
     private String name;
     private String address;
+    @Column(precision = 38, scale = 10)
     private BigDecimal latitude;
+    @Column(precision = 38, scale = 10)
     private BigDecimal longitude;
     private String category;
     private String status;
