@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatMessage {
 
     @Id
@@ -28,6 +30,10 @@ public class ChatMessage {
     private String content;
 
     private LocalDateTime sent_at;
+
+    private Integer restaurant_detail;
+
+    private String restaurant_name;
 
     @PrePersist
     protected void onCreate() {

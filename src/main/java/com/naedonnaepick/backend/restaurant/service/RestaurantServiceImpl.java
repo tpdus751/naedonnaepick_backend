@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.naedonnaepick.backend.restaurant.db.RestaurantRepository;
 import com.naedonnaepick.backend.restaurant.db.RestaurantTagsRepository;
+import com.naedonnaepick.backend.restaurant.dto.RestaurantDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantRecommendationDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantWithDistanceDTO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
@@ -211,6 +212,14 @@ public class RestaurantServiceImpl implements RestaurantService {
                         .comparingDouble(RestaurantRecommendationDTO::getProbability).reversed() // 확률 높은 순
                         .thenComparingDouble(RestaurantRecommendationDTO::getDistance))          // 동일 확률 시 가까운 순
                 .limit(100)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RestaurantDTO> searchRestaurantsByName(String query) {
+        List<RestaurantEntity> restaurants = restaurantRepository.findByNameContainingIgnoreCase(query);
+        return restaurants.stream()
+                .map(RestaurantDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 

@@ -194,4 +194,5 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, In
             @Param("minPrice") int minPrice,
             @Param("maxPrice") int maxPrice);
 
+    List<RestaurantEntity> findByNameContainingIgnoreCase(String name);
 }

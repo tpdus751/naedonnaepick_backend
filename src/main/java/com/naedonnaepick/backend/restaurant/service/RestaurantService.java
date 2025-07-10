@@ -1,5 +1,6 @@
 package com.naedonnaepick.backend.restaurant.service;
 
+import com.naedonnaepick.backend.restaurant.dto.RestaurantDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantRecommendationDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantWithDistanceDTO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
@@ -38,4 +39,5 @@ public interface RestaurantService {
 
     List<RestaurantRecommendationDTO> recommendByLocation(BigDecimal lat, BigDecimal lng, Map<String, Double> userTags, int minPrice, int maxPrice, String region);
 
+    List<RestaurantDTO> searchRestaurantsByName(String query);
 }

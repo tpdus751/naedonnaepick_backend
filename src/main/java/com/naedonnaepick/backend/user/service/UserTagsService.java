@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface UserTagsService {
     Optional<UserTagsEntity> getUserTagsByEmail(String email);
+
+    void save(UserTagsEntity tagEntity);
 }
