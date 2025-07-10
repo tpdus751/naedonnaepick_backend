@@ -21,4 +21,9 @@ public class UserTagsServiceImpl implements UserTagsService{
     public Optional<UserTagsEntity> getUserTagsByEmail(String email) {
         return userTagsRepository.findById(email);
     }
+
+    @Override
+    public void save(UserTagsEntity userTags) {
+        userTagsRepository.save(userTags);
+    }
 }

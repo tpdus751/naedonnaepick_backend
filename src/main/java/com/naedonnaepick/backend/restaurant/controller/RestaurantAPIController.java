@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.restaurant.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.naedonnaepick.backend.restaurant.dto.RestaurantDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantRecommendationDTO;
 import com.naedonnaepick.backend.restaurant.dto.RestaurantWithDistanceDTO;
 import com.naedonnaepick.backend.restaurant.entity.RestaurantEntity;
@@ -154,5 +155,11 @@ public class RestaurantAPIController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/message")
+    public ResponseEntity<List<RestaurantDTO>> getRestaurantsForMessage(@RequestParam String query) {
+        List<RestaurantDTO> results = restaurantService.searchRestaurantsByName(query);
+        return ResponseEntity.ok(results);
     }
 }

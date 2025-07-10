@@ -6,4 +6,8 @@ import java.util.Optional;
 
 public interface UserService {
     UserEntity login(String email, String password);
+
+    boolean existsByEmail(String email);
+
+    void save(UserEntity user);
 }
