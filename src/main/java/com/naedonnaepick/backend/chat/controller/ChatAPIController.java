@@ -1,6 +1,7 @@
 package com.naedonnaepick.backend.chat.controller;
 
 import com.naedonnaepick.backend.chat.db.entity.ReportEntity;
+import com.naedonnaepick.backend.chat.dto.TopVotedRestaurantDTO;
 import com.naedonnaepick.backend.chat.entity.ChatEnterRequestEntity;
 import com.naedonnaepick.backend.chat.db.entity.ChatroomEntity;
 import com.naedonnaepick.backend.chat.entity.ChatLeaveRequestEntity;
@@ -70,5 +71,11 @@ public class ChatAPIController {
     @GetMapping("/room/{roomNo}/userCount")
     public ResponseEntity<Integer> getUserCount(@PathVariable String roomNo) {
         return ResponseEntity.ok(sessionTracker.getUserCount(roomNo));
+    }
+
+    @GetMapping("/vote_result")
+    public ResponseEntity<List<TopVotedRestaurantDTO>> getTopVotedRestaurants(@RequestParam int roomNo) {
+        List<TopVotedRestaurantDTO> topVoted = chatService.getTopVotedRestaurants(roomNo);
+        return ResponseEntity.ok(topVoted);
     }
 }
